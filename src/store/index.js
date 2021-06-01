@@ -13,7 +13,7 @@ export default createStore({
     async connectAccount(state) {
       try {
         if (typeof window.ethereum === "undefined") {
-          alert("you need install MetaMask");
+          console.log("you need install MetaMask");
         } else {
           const accounts = await ethereum.request({
             method: "eth_requestAccounts",

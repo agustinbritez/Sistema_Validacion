@@ -11,7 +11,10 @@ import {
 
 // aplicacion para la conexión con la blockchain 
 const Web3 = require("web3");
-let web3 = new Web3(Web3.givenProvider || Parameters.provider);
+let web3 = new Web3(new Web3.providers.HttpProvider(
+    'https://ropsten.infura.io/v3/448d24f73f314a188b6e8bf7cdcd0f7b'
+));
+// let web3 = new Web3(Web3.givenProvider || Parameters.provider);
 
 const miContrato = new web3.eth.Contract(CONST_ABI, Parameters.addressContract_Test);
 ///************************Organitation***************************** */
@@ -32,13 +35,17 @@ export  function setOwner(new_owner) {
 //**************************Event************************************* */
 
 export async function getAllEvents(_area_id = 0, _from = 0, _to = -1) {
-    if (_area_id > 0) {
+    if (typeof window.ethereum !== "undefined") {
+        if (_area_id > 0) {
 
-        return await Event.getAllEventsOneArea(_area_id, _from, _to, miContrato);
-    } else {
-
-        return await Event.getAllEvents(miContrato);
+            return await Event.getAllEventsOneArea(_area_id, _from, _to, miContrato);
+        } else {
+    
+            return await Event.getAllEvents(miContrato);
+        }
     }
+    return [];
+    
 }
 export async function addEvent(_area_id, _name, _description, startDate, endDate) {
     return await Event.addEvent(_area_id, _name, _description, startDate, endDate, miContrato);
@@ -59,7 +66,11 @@ export async function getLengthEventsOfArea(_area_id) {
 
 //****************************Areas********************************** */
 export async function getAllAreaOfOwner(_from, _to) {
-    return await Area.getAllAreaOfOwner(_from, _to, miContrato);
+    if (typeof window.ethereum !== "undefined") {
+    
+        return await Area.getAllAreaOfOwner(_from, _to, miContrato);
+    }
+    return [];
 }
 
 export async function getLengthAreaOfOwner() {
@@ -82,7 +93,11 @@ export async function deleteArea(_id_area) {
 }
 //**************************** States ********************************** */
 export async function getStatesAll() {
-    return await State.getStatesAll(miContrato);
+    if (typeof window.ethereum !== "undefined") {
+    
+        return await State.getStatesAll(miContrato);
+    }
+    return [];
 }
 export async function getState(_id) {
     return await State.getState(_id,miContrato);
@@ -151,6 +166,7 @@ export async function search(filter) {
 
 // }
 export function getRol() {
+
     return ethereum.request({
         method: "eth_requestAccounts",
     }).then((accounts) => {

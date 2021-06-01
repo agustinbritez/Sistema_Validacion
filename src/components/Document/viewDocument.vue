@@ -353,6 +353,17 @@
               />
             </div>
           </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <p>Organización</p>
+              <input
+                readonly
+                v-model="organizacion"
+                type="text"
+                class="validate"
+              />
+            </div>
+          </div>
         </div>
       </div>
 
@@ -476,6 +487,7 @@ export default {
       statesSelect: [],
       eventsSelect: [],
       areasSelect: [],
+      organizacion:"",
       startEvent: "",
       expiration: "",
       endEvent: "",
@@ -645,6 +657,7 @@ export default {
       for (let index = 0; index < states.length; index++) {
         this.statesSelect.push(states[index]);
       }
+      this.organizacion = await AppWeb3.getOrganitation();
     },
     async getEventOfArea() {
       let me = this;

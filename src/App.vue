@@ -37,6 +37,7 @@ export default {
   setup() {
     const rol = ref({});
     provide("rol", rol);
+    rol.value="NADA";
     const organitationName = ref("Validation System");
     provide("organitationName", organitationName);
 
@@ -83,8 +84,8 @@ export default {
   mounted() {
     let router = useRouter();
     console.log(router.currentRoute.value.name);
-
-    window.ethereum.on("accountsChanged", function (accounts) {
+if (typeof window.ethereum !== "undefined") {
+   window.ethereum.on("accountsChanged", function (accounts) {
       getRol().then((x) => {
         console.log("cambio?" + x);
         if (x != "OWNER" && x != "OWNER_AREA") {
@@ -99,8 +100,7 @@ export default {
         location.reload();
       });
     });
-
-    getRol().then((x) => {
+     getRol().then((x) => {
       this.rol = x;
       //cambiar esto porque carga infinitamente
       if (x != "OWNER" && x != "OWNER_AREA") {
@@ -112,6 +112,10 @@ export default {
         }
       }
     });
+}
+ 
+
+   
 
     //Activar animaciones
     // M.AutoInit();
