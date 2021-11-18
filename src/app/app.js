@@ -11,7 +11,7 @@ import {
 
 // aplicacion para la conexión con la blockchain 
 const Web3 = require("web3");
-let web3 = new Web3(new Web3.providers.HttpProvider(
+let web3 = new Web3( Web3.givenProvider || new Web3.providers.HttpProvider(
     'https://ropsten.infura.io/v3/448d24f73f314a188b6e8bf7cdcd0f7b'
 ));
 // let web3 = new Web3(Web3.givenProvider || Parameters.provider);
