@@ -71,7 +71,7 @@ export async function deleteArea(_id_area, miContrato) {
     const account = accounts[0];
     let _id_state = 0;
     const _id_event = await miContrato.methods
-        .editStateArea(_id_area,
+        .editArea(_id_area,'','',
             _id_state
         )
         .send({

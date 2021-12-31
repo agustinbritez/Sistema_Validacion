@@ -137,6 +137,7 @@ import { useRoute } from "vue-router";
 import Multiselect from "@vueform/multiselect";
 import ListDocuments from "../Document/ListDocuments.vue";
 import * as Menssage from "../../app/menssage.js";
+import { mapState } from 'vuex';
 
 export default {
   name: "Event",
@@ -144,9 +145,12 @@ export default {
     Multiselect,
     ListDocuments,
   },
+  computed:{
+        ...mapState(["idProps"]),
+  },
   setup(props) {
-    let router = useRoute();
-    let area_id = router.params.id;
+    // let router = useRoute();
+    let area_id = 0;
 
     return { area_id };
   },
@@ -163,7 +167,7 @@ export default {
     let router = useRoute();
     await this.getStatesAll();
     await this.getAllAreasOfOwner();
-    this.eventView = await AppWeb3.getEvent(router.params.id);
+    this.eventView = await AppWeb3.getEvent(this.idProps);
 
     this.eventAux.id = this.eventView.id;
     this.eventAux.name = this.eventView.name;

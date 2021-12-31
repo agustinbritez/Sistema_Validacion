@@ -36,13 +36,18 @@
               <td class="hide-on-med-and-down">{{ area.state.name }}</td>
               <td>
                 <div class="row">
-                  <router-link
+                  <!-- <router-link
                     :to="{ name: 'AreaView', params: { id: area.id } }"
                     ><i class="blue-text text-accent-4 material-icons"
                       >visibility</i
-                    ></router-link
+                    ></router-link> -->
+                   <a
+                    href="#"
+                    @click.prevent=""
                   >
-
+                    <i class="blue-text text-accent-4 material-icons" @click="switchView({view:'ViewArea',id:area.id})">visibility</i> </a
+                  >
+                  
                   &nbsp;
 
                   <a
@@ -86,7 +91,7 @@
 
 <script>
 import { provide, ref, watchEffect } from "vue";
-import { mapState } from "vuex";
+import { mapMutations, mapState } from "vuex";
 import Pagination from "../elements/Pagination.vue";
 import * as AppWeb3 from "../../app/app.js";
 import EditArea from "./EditArea.vue";
@@ -99,6 +104,10 @@ export default {
     EditArea,
     DeleteModal,
   },
+  computed:{
+    ...mapState(["account", "isLoading","current"]),
+  }
+  ,
   data() {
     return {
       modalDelete: "modalDelete",
@@ -107,7 +116,7 @@ export default {
       // areaEdit: {},
       actionEdit: true,
       nameModal: "",
-      menssage: "¿Do you want to delete it?",
+      menssage: "¿Desea Eliminarlo?",
       element_id: 0,
     };
   },
@@ -173,6 +182,12 @@ export default {
     };
   },
   methods: {
+    ...mapMutations(["switchComponent","switchView"]),
+
+    // switchView: function (view,id) {  
+    //   switchId(id);
+    //   switchComponent(view);
+    // },
     async getLengthAreaOfOwner() {
       let result = await AppWeb3.getLengthAreaOfOwner();
       return result;

@@ -56,6 +56,9 @@ export async function getEvent(_event_id) {
 export async function editEvent(_event_id, _name, _description, startDate, endDate, area_id, sate_id) {
     return await Event.editEvent(_event_id, _name, _description, startDate, endDate, area_id, sate_id, miContrato);
 }
+export async function deleteEvent(_event_id) {
+    return await Event.deleteEvent(_event_id, miContrato);
+}
 export async function getEventOfArea(_from, _to) {
     return await Event.getEventOfArea(_from, _to, miContrato);
 }

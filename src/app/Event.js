@@ -167,7 +167,24 @@ export async function editEvent(_event_id, _name, _description, startDate, endDa
 
     
 }
+export async function deleteEvent(_id_event_, miContrato) {
 
+    const accounts = await ethereum.request({
+        method: "eth_requestAccounts",
+    });
+    const account = accounts[0];
+    let _id_state = 0;
+    let evt=await miContrato.methods.getEvent(_id_event_).call((err, result) => {
+        result;
+    });
+    const _id = await miContrato.methods
+        .editEventFull(  _id_event_,"","","","", evt.area_id, _id_state)
+        .send({
+                from: account,
+            },
+            function (error, transactionHash) {}
+        );
+}
 export async function getLengthEventsOfArea(_area_id, miContrato) {
     let _event;
     // si es 0 el area tiene que traer todas los eventos

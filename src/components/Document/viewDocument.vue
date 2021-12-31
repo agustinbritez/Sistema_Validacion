@@ -74,7 +74,7 @@
     </div>
     <div class="row">
       <div class="col s12">
-        <ul class="tabs tabs-transparent">
+        <ul class="tabs tabs-transparent" id="document-tab">
           <li class="tab col s6 tab-verify">
             <a class="active" href="#tab_verify">Verificados</a>
           </li>
@@ -681,14 +681,19 @@ export default {
     },
   },
   async mounted() {
-    await this.getStatesAll();
+        await this.getStatesAll();
     await this.getAllAreasOfOwner();
 
-    var tabs = document.querySelectorAll(".tabs");
+    var el = document.querySelectorAll(".tabs");
     var options = {};
-    var tabsInstance = M.Tabs.init(tabs, options);
+    var instance = M.Tabs.init(el, options);
     var modals = document.querySelectorAll(".modal");
     var modalnstance = M.Modal.init(modals, options);
+
+
+    
+ 
+
   },
 };
 </script>

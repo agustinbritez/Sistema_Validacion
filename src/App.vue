@@ -2,10 +2,17 @@
   <div>
     <NavBar :color="'blue'" :text_color="''" :key="componentKey" />
     <!-- router-view muestra el componente relacionado a la ruta actual en el NavBar estan como se llaman alas rutas -->
-    <transition>
+    <!-- <transition>
       <router-view />
-    </transition>
-
+    </transition> -->
+    <!-- https://stackoverflow.com/questions/47512931/how-to-dynamically-change-components-in-vuejs -->
+    <!-- <div :is="Home" :swap-component="swapComponent"></div> -->
+    
+    <component :is="current" v-bind="{ idProps: 4 }"  ></component>
+    <!-- kkeep-alive mantiene el componente sin destruir pero no me sirve porque asi carda de nuevo los eventos y areas que existen -->
+    <!-- <keep-alive>
+    <component :is="current" v-bind="{ idProps: 4 }"  ></component>
+    </keep-alive> -->
     <PreLoad></PreLoad>
     <Footer />
   </div>
@@ -14,6 +21,14 @@
 import NavBar from "@/components/NavBar.vue";
 import Footer from "@/components/Footer.vue";
 import PreLoad from "./components/elements/PreLoad.vue";
+import Home from "./views/Home.vue";
+import Areas from "./views/Areas.vue";
+import Events from "./views/Events.vue";
+import Tutorial from "./views/Tutorial.vue";
+import FindDocument  from "@/components/Document/FindDocument.vue";
+import ViewArea  from "@/components/Areas/ViewArea.vue";
+import viewEvent  from "@/components/Event/viewEvent.vue";
+
 import { mapState } from "vuex";
 import "../public/materialize/js/materialize.min.js";
 import { provide, reactive, ref, watchEffect } from "vue";
@@ -26,13 +41,26 @@ export default {
     NavBar,
     Footer,
     PreLoad,
+    Home:Home,
+    Areas:Areas,
+    ViewArea:ViewArea,
+    Events:Events,
+    ViewEvent:viewEvent,
+    Documents:FindDocument,
+    Tutorial
   },
   computed: {
-    ...mapState(["account", "isLoading"]),
+    ...mapState(["account", "isLoading","current","idProps"]),
   },
-  methods: {},
+  methods: {
+     componentKey() {
+      this.rol = this.rol;
+    },
+  },
   data() {
-    return {};
+    return {
+      idProp:0
+    };
   },
   setup() {
     const rol = ref({});
@@ -76,11 +104,6 @@ export default {
       reduceHash,
     };
   },
-  methods: {
-    componentKey() {
-      this.rol = this.rol;
-    },
-  },
   mounted() {
     let router = useRouter();
     console.log(router.currentRoute.value.name);
@@ -112,6 +135,7 @@ if (typeof window.ethereum !== "undefined") {
         }
       }
     });
+}else{
 }
  
 

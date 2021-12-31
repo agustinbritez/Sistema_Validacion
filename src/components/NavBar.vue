@@ -37,7 +37,7 @@
         <SearchGlobal /> -->
       </div>
 
-      <div class="nav-content">
+      <!-- <div class="nav-content">
         <ul class="tabs tabs-transparent">
           <li class="tab"  v-if="rol == 'OWNER_AREA' || rol == 'OWNER'">
             <router-link :to="{ name: 'Home' }">Home</router-link>
@@ -52,6 +52,26 @@
             <router-link :to="{ name: 'FindDocument' }"
               >Encontrar Documentos</router-link
             >
+          </li>
+        </ul>
+      </div> -->
+      <div class="nav-content">
+        <ul class="tabs tabs-transparent">
+          <li class="tab"  v-if="rol == 'OWNER_AREA' || rol == 'OWNER'">
+            <a href="#" @click="switchComponent('Home')">Home</a>
+          </li>
+          <li class="tab" v-if="rol == 'OWNER_AREA' || rol == 'OWNER'">
+            <a href="#" @click="switchComponent('Events')">Eventos</a>
+
+          </li>
+          <li class="tab" v-if="rol == 'OWNER_AREA' || rol == 'OWNER'">
+             <a href="#" @click="switchComponent('Areas')">Areas</a>
+          </li>
+          <li class="tab">
+            <a href="#" @click="switchComponent('Documents')">Encontrar Documentos</a>
+          </li>
+          <li class="tab">
+            <a href="#" @click="switchComponent('Tutorial')">Tutorial</a>
           </li>
         </ul>
       </div>
@@ -92,15 +112,16 @@ export default {
   },
 
   computed: {
-    ...mapState(["account"]),
+    ...mapState(["account","current"]),
   },
   components: {
     SideNav,
     SearchGlobal,
-    ButtonSetting,
+    ButtonSetting
   },
   methods: {
-    ...mapMutations(["connectAccount", "verificationAccount"]),
+    ...mapMutations(["connectAccount", "verificationAccount","switchComponent"]),
+   
   },
   mounted() {
     

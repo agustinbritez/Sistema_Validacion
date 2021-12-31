@@ -33,7 +33,7 @@
             <tr v-for="event in eventsArray" :key="event.id">
               <td>{{ event.id }}</td>
               <td>{{ event.name }}</td>
-              <td class="hide-on-med-and-down">{{ event.description }}</td>
+              <td class="hide-on-med-and-down">{{ event.id == 1 ? "":event.description }}</td>
               <td>{{ event.area_id }}</td>
               <td>{{ ((new Date(event.startEvent).getDate())+'/'+(new Date(event.startEvent).getMonth()+1)+'/'+(new Date(event.startEvent).getFullYear())+' '+(new Date(event.startEvent).getHours())+":"+(new Date(event.startEvent).getMinutes()) )|| "undate" }}</td>
               <td class="hide-on-med-and-down">
@@ -44,12 +44,12 @@
               <td>
                 <div class="row right">
                   <div class="col">
-                    <router-link
-                      :to="{ name: 'EventView', params: { id: event.id } }"
-                      ><i class="blue-text text-accent-4 material-icons"
-                        >visibility</i
-                      ></router-link
-                    >
+                       <a
+                    href="#"
+                    @click.prevent=""
+                  >
+                    <i class="blue-text text-accent-4 material-icons" @click="switchView({view:'ViewEvent',id:event.id})">visibility</i> </a
+                  >
                     &nbsp;
                   </div>
                   <div class="col">
@@ -62,9 +62,12 @@
                     >&nbsp;
                   </div>
                   <div class="col">
-                    <a href="#" class="red-text text-accent-4"
-                      ><i class="material-icons">delete_forever</i></a
-                    >
+                    <a
+                    href="#"
+                    @click.prevent="openDeleteElement(event.id)"
+                    class="modal-trigger red-text text-accent-4"
+                    ><i class="material-icons">delete_forever</i></a
+                  >
                   </div>
                 </div>
               </td>
@@ -83,24 +86,36 @@
       </div>
     </div>
     <br />
+     <DeleteModal
+      :modalName="modalDelete"
+      :menssage="menssage"
+      nameModal="Evento"
+      :element_id="element_id"
+    />
   </div>
 </template>
 
 <script>
 import { inject, provide, ref, watchEffect } from "vue";
-import { mapState } from "vuex";
+import { mapMutations, mapState } from "vuex";
 import Pagination from "../elements/Pagination.vue";
 import * as AppWeb3 from "../../app/app.js";
 import EditEvent from "./EditEvent.vue";
+import DeleteModal from "../elements/DeleteModal.vue";
 
 export default {
   name: "listEvents",
   components: {
     Pagination,
     EditEvent,
+    DeleteModal
   },
   data() {
     return {
+      modalDelete: "modalDelete",
+      menssage: "¿Desea Eliminarlo?",
+      element_id: 0,
+
       modalEdit: "modalEdit",
       // eventEdit: {},
       activeInput: true,
@@ -161,13 +176,28 @@ export default {
       console.log("load " + load.value);
       listEvents();
     });
+let deleteElement = ref(0);
+    provide("deleteElement", deleteElement);
 
-    return { load, eventEdit, listEvents, eventsArray, pagination };
+ const deleteElementSelect = async () => {
+      await AppWeb3.deleteEvent(deleteElement.value);
+    };
+
+    watchEffect(async () => {
+      console.log("deleteElement " + deleteElement.value);
+      if (deleteElement.value > 0) {
+        await deleteElementSelect();
+        await listEvents();
+      }
+    });
+    return { deleteElement,load, eventEdit, listEvents, eventsArray, pagination };
   },
   computed: {
     ...mapState(["account"]),
   },
   methods: {
+        ...mapMutations(["switchView"]),
+
     async getLengthEvents(_area_id) {
       let result = await AppWeb3.getLengthEventsOfArea(_area_id);
       return result;
@@ -219,6 +249,12 @@ export default {
       // console.log(modalInstance);
       this.nameModal = "Event New";
       this.activeInput = false;
+      modalInstance.open();
+    },
+    openDeleteElement(_id) {
+      var elem = document.getElementById(this.modalDelete);
+      var modalInstance = M.Modal.getInstance(elem);
+      this.element_id = _id;
       modalInstance.open();
     },
     format(fecha){

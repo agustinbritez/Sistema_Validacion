@@ -8,8 +8,21 @@ export default createStore({
   state: {
     account: '',
     isLoading:false,
+    current:"Documents",
+    idProps:0
   },
   mutations: {
+    
+    switchView: function(state,value) {
+      state.idProps=value.id;
+      state.current = value.view;
+    },
+    switchComponent: function(state,value) {
+      state.current = value;
+    },
+    switchId: function(state,value) {
+      state.idProps = value;
+    },
     async connectAccount(state) {
       try {
         if (typeof window.ethereum === "undefined") {

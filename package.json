@@ -2,8 +2,8 @@
   "name": "sistema_validacion",
   "version": "0.1.0",
   "private": true,
-  "homepage": ".",
-  "publicPath": ".",
+  "homepage": "./",
+  "publicPath": "./",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build"

@@ -47,6 +47,9 @@ export default {
     // var modals = document.querySelectorAll(".modal");
     // var options = {};
     // var modalnstance = M.Modal.init(modals, options);
+    // var tabs = document.querySelectorAll(".tabs");
+    // var options = {};
+    // var tabsInstance = M.Tabs.init(tabs, options);
   },
   methods: {
     async saveDocuments(hash, event_id) {

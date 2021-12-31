@@ -112,7 +112,7 @@
           </div>
         </div>
       </div>
-      <listEvents :area_id="area_id" />
+      <listEvents :area_id="idProps" />
       <br />
     </div>
   </div>
@@ -125,6 +125,7 @@ import { useRoute } from "vue-router";
 import Multiselect from "@vueform/multiselect";
 import listEvents from "../Event/listEvents.vue";
 import * as Menssage from "../../app/menssage.js";
+import { mapState } from 'vuex';
 
 export default {
   name: "Event",
@@ -132,9 +133,14 @@ export default {
     Multiselect,
     listEvents,
   },
+  computed:{
+      ...mapState(["idProps"]),
+  },
   setup(props) {
     let router = useRoute();
-    let area_id = router.params.id;
+    // let area_id = router.params.id;
+
+    let area_id = 0;
 
     return { area_id };
   },
@@ -148,20 +154,18 @@ export default {
     };
   },
   async mounted() {
-    M.AutoInit();
-    //animacion para setting
     var dropsdowns = document.querySelectorAll(".dropdown-trigger");
     var options = { coverTrigger: false };
     var instancesDropsdown = M.Dropdown.init(dropsdowns, options);
 
-    let router = useRoute();
     await this.getStatesAll();
-    this.areaView = await AppWeb3.getArea(router.params.id);
+    this.areaView = await AppWeb3.getArea(this.idProps);
     this.areaAux.id = this.areaView.id;
     this.areaAux.name = this.areaView.name;
     this.areaAux.description = this.areaView.description;
     this.areaAux.owner = this.areaView.owner;
     this.areaAux.state_id = this.areaView.state_id;
+    // M.AutoInit();
   },
   methods: {
     async getStatesAll() {
@@ -184,7 +188,7 @@ export default {
     async saveOwner() {
       const retorno = await AppWeb3.changeOwnerArea(
         this.areaAux.owner,
-        this.area_id
+        this.idProps
       );
       if (retorno) {
         this.areaView.owner = this.areaAux.owner;

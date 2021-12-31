@@ -128,7 +128,7 @@ export default {
 
       actionEdit: true,
       nameModal: "",
-      menssage: "¿Do you want to delete it?",
+      menssage: "¿Desea Eliminarlo?",
       element_id: 0,
     };
   },
